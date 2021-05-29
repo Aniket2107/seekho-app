@@ -1,19 +1,48 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+import { View, Text, StyleSheet } from "react-native";
+import AppLoading from "expo-app-loading";
+
+import { useFonts } from "expo-font";
 
 import { Learn } from "../screens/learn";
 import { FlashCard } from "../screens/learn";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
 const Stack = createStackNavigator();
 
 const MyStack = () => {
+  let [fontsLoaded] = useFonts({
+    PatrickHand_400Regular: require("../assets/PatrickHand-Regular.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="Learn"
         component={Learn}
         options={{
-          headerShown: false,
+          headerTitle: () => null,
+          headerStyle: {
+            backgroundColor: "#e7305b",
+          },
+          headerRightContainerStyle: {
+            marginRight: 15,
+          },
+          headerLeftContainerStyle: {
+            marginLeft: 15,
+          },
+          headerRight: () => (
+            <View style={styles.rightView}>
+              <Icon name="crown" color={"orange"} size={20} />
+              <Text style={styles.rightText}>10</Text>
+            </View>
+          ),
+          headerLeft: () => <Text style={styles.leftText}>Welcome! </Text>,
         }}
       />
       <Stack.Screen
@@ -30,3 +59,23 @@ const MyStack = () => {
 export default function LearnNavigation() {
   return <MyStack />;
 }
+
+const styles = StyleSheet.create({
+  rightView: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  rightText: {
+    fontSize: 30,
+    marginLeft: 2,
+    color: "#fff",
+    fontFamily: "PatrickHand_400Regular",
+  },
+  leftText: {
+    fontSize: 30,
+    color: "#fff",
+    // fontWeight: "bold",
+    fontFamily: "PatrickHand_400Regular",
+  },
+});

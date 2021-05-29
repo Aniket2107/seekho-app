@@ -1,12 +1,13 @@
 import React from "react";
+
 import { View, Text } from "react-native";
 
-const FlashCard = () => {
+const Ranking: React.FC = () => {
   return (
     <View>
-      <Text>Hello FlashCard page</Text>
+      <Text>Ranking page</Text>
     </View>
   );
 };
 
-export default FlashCard;
+export default Ranking;

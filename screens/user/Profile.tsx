@@ -1,12 +1,13 @@
 import React from "react";
+
 import { View, Text } from "react-native";
 
-const FlashCard = () => {
+const Profile: React.FC = () => {
   return (
     <View>
-      <Text>Hello FlashCard page</Text>
+      <Text>Profile page</Text>
     </View>
   );
 };
 
-export default FlashCard;
+export default Profile;

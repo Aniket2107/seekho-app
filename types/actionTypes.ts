@@ -1,0 +1,5 @@
+export const SET_CURRENT_USER = "SET_CURRENT_USER";
+
+export const SET_LANG_DATA = "SET_LANG_DATA";
+
+export const SET_CURRENT_LANG = "SET_CURRENT_LANG";
