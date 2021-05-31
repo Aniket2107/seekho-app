@@ -22,7 +22,7 @@ export const loginUser = (
   })
     .then((res) => res.json())
     .then(async (data) => {
-      if (data) {
+      if (data.success) {
         // console.log("Data ===>>", data);
         const token = data.data;
         const decode: decodeType = await jwt_deocde(token);
@@ -39,7 +39,7 @@ export const loginUser = (
           payload: pt,
         });
       }
-      //  else {
+      // else {
       //   logoutUser(dispatch);
       // }
     })

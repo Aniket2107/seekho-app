@@ -1,5 +1,6 @@
 {
   "main": "node_modules/expo/AppEntry.js",
+  "author": "aniket habib",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -8,12 +9,10 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "@expo-google-fonts/patrick-hand": "^0.1.0",
     "@react-native-async-storage/async-storage": "^1.13.0",
     "@react-navigation/bottom-tabs": "^5.11.11",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.5",
-    "axios": "^0.21.1",
     "expo": "~41.0.1",
     "expo-app-loading": "^1.0.3",
     "expo-font": "~9.1.0",
@@ -26,6 +25,7 @@
     "react-native-gesture-handler": "^1.10.3",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "3.0.0",
+    "react-native-sound-player": "^0.10.8",
     "react-native-vector-icons": "^8.1.0",
     "react-native-web": "~0.13.12"
   },

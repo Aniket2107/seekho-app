@@ -1,12 +1,15 @@
 import React from "react";
+import {
+  getFocusedRouteNameFromRoute,
+  useFocusEffect,
+} from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { View, Text, StyleSheet } from "react-native";
 import AppLoading from "expo-app-loading";
 
 import { useFonts } from "expo-font";
 
-import { Learn } from "../screens/learn";
-import { FlashCard } from "../screens/learn";
+import { Learn, FlashCard } from "../screens/learn";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
 const Stack = createStackNavigator();
@@ -56,7 +59,25 @@ const MyStack = () => {
   );
 };
 
-export default function LearnNavigation() {
+export default function LearnNavigation({ navigation, route }: any) {
+  const routeName = getFocusedRouteNameFromRoute(route) ?? "Learn";
+
+  const preload = async () => {
+    if (routeName === "FlashCard") {
+      await navigation.setOptions({
+        tabBarVisible: false,
+      });
+    } else {
+      navigation.setOptions({
+        tabBarVisible: true,
+      });
+    }
+  };
+
+  useFocusEffect(() => {
+    preload();
+  });
+
   return <MyStack />;
 }
 
@@ -79,3 +100,6 @@ const styles = StyleSheet.create({
     fontFamily: "PatrickHand_400Regular",
   },
 });
+
+// ||
+// route.state.routeNames[route.state.index] === "FlashCard"

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
-import { StatusBar } from "expo-status-bar";
+
+import { API } from "./backend";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
@@ -22,13 +23,30 @@ const Routes: React.FC = () => {
     if (data) {
       const dt = JSON.parse(data);
 
-      context.dispatch({
+      await context.dispatch({
         type: t.SET_CURRENT_USER,
         payload: dt,
       });
+
+      fetch(`${API}user/${dt.userId}`)
+        .then((res) => res.json())
+        .then(async (data) => {
+          if (data.success) {
+            const pt = {
+              knownLang: data.data.knownLang,
+              learningLang: data.data.learningLang,
+              currentLang: data.data.learningLang[0],
+            };
+
+            await context.dispatch({
+              type: t.SET_LANG_DATA,
+              payload: pt,
+            });
+          }
+        })
+        .catch((err) => console.log(err));
     }
     setLoading(false);
-    console.log("state =====", context.state);
   };
 
   useEffect(() => {

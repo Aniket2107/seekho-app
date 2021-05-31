@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, Animated } from "react-native";
+import { EvilIcons } from "@expo/vector-icons";
 
 import { useFonts } from "expo-font";
 
@@ -12,7 +13,7 @@ interface IProps {
   progress: number;
 }
 
-const colorData = ["#F6BD6E", "#EF585A", "#4FC4CC", "#799DF3"];
+const colorData = ["#F6BD6E", "#99ea86", "#4FC4CC", "#799DF3"]; //"#EF585A"
 
 const LearnCard: React.FC<IProps> = (props) => {
   const levelLenght = props.level.length;
@@ -28,12 +29,13 @@ const LearnCard: React.FC<IProps> = (props) => {
 
   return (
     <View>
-      <View
-        style={[
-          styles.card,
-          { backgroundColor: colorData[id], opacity: props.isLocked ? 0.5 : 1 },
-        ]}
-      >
+      <View style={[styles.card, { backgroundColor: colorData[id] }]}>
+        <EvilIcons
+          name="lock"
+          size={35}
+          color="#000"
+          style={[styles.lockedBtn, { opacity: props.isLocked ? 1 : 0 }]}
+        />
         <View style={styles.main}>
           <View style={styles.leftContainer}>
             <Text
@@ -67,11 +69,11 @@ const LearnCard: React.FC<IProps> = (props) => {
         <View
           style={[
             styles.bottomView,
-            { backgroundColor: props.isLocked ? "#D0D0D0" : "#3D8754" },
+            { backgroundColor: props.isLocked ? "red" : "#3D8754" },
           ]}
         >
           {props.isLocked ? (
-            <Text style={[styles.bottomText, { color: "#000" }]}> Locked </Text>
+            <Text style={[styles.bottomText, { color: "#fff" }]}> Locked </Text>
           ) : (
             <Text style={[styles.bottomText, { color: "#fff" }]}>Unlocked</Text>
           )}
@@ -96,6 +98,11 @@ const styles = StyleSheet.create({
     borderColor: "grey",
     marginBottom: 30,
     borderWidth: 0.1,
+  },
+  lockedBtn: {
+    position: "absolute",
+    top: 10,
+    left: 5,
   },
   main: {
     width: "80%",
@@ -145,6 +152,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     alignItems: "center",
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    elevation: 5,
   },
   bottomText: {
     letterSpacing: 0.5,

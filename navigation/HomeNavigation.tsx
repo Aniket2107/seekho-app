@@ -1,6 +1,6 @@
 import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { Entypo } from "@expo/vector-icons";
+
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";

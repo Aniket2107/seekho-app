@@ -30,6 +30,7 @@ type UserPayload = {
   [t.SET_LANG_DATA]: {
     knownLang: string;
     learningLang: string[];
+    currentLang: string;
   };
   [t.SET_CURRENT_LANG]: {
     currentLang: string;
@@ -55,6 +56,7 @@ export default function (state: initialStateType, action: UserActions) {
         ...state,
         knownLang: action.payload.knownLang,
         learningLang: action.payload.learningLang,
+        currentLang: action.payload.currentLang,
       };
     case t.SET_CURRENT_LANG:
       return {

@@ -1,37 +1,46 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 import { API } from "../../backend";
 import LearnCard from "../../components/LearnCard";
 import AuthGlobal from "../../context/store/AuthGlobal";
+import { LearnNavProps } from "../../types/ParamList";
 
-const temoData = ["Colors", "Fruits", "Numbers", "Words", "Text", "Changes"];
+// const temoData = ["Colors", "Fruits", "Numbers", "Words", "Text", "Changes"];
 
 type progres = {
   level: string;
   progress: number;
 };
 
-const Learn: React.FC = () => {
+const Learn = ({ navigation }: LearnNavProps<"Learn">) => {
   const context = useContext(AuthGlobal);
 
   const [levels, setLevels] = useState<string[]>([]);
   const [progressData, setProgressData] = useState<progres[]>([]);
+  const [isFetched, setisFetched] = useState(false);
 
-  useEffect(() => {
-    fetch(`${API}lang/level/Marathi`, {
+  const preload = async () => {
+    await fetch(`${API}lang/level/${context.state.currentLang}`, {
       method: "GET",
     })
       .then((res) => res.json())
       .then((data) => {
-        setLevels(data.data);
+        if (data.success) {
+          setLevels(data.data);
+        }
       })
       .catch((err) => console.log(err));
 
-    //Fetching the progress:--
-
-    fetch(
+    await fetch(
       `${API}algo/learnData/${context.state.userId}/${context.state.currentLang}`,
       {
         method: "GET",
@@ -44,51 +53,78 @@ const Learn: React.FC = () => {
         }
       })
       .catch((err) => console.log(err));
-  }, []);
+
+    setisFetched(true);
+  };
+
+  useEffect(() => {
+    console.log("OP");
+    preload();
+  }, [isFetched]);
 
   var previous: number | null = null;
+
+  const handleClick = (isLocked: boolean, lvl: string) => {
+    if (isLocked) {
+      Alert.alert(
+        "Level locked",
+        "Please complete 80% of previous level to unlock",
+        [
+          {
+            text: "Ok",
+            onPress: () => console.log("Ok pressed"),
+          },
+        ]
+      );
+    } else {
+      navigation.navigate("FlashCard", { level: lvl });
+    }
+  };
 
   return (
     <View style={styles.container}>
       <ScrollView>
         <Text style={styles.heading}>Select a Level</Text>
-        {temoData.map((lvl, idx) => {
-          let progress = 0;
 
-          progressData.map((data) => {
-            if (data.level.includes(`${lvl}`)) {
-              progress = data.progress;
+        {levels.length > 0 ? (
+          levels.map((lvl, idx) => {
+            let progress = 0;
+
+            progressData.map((data) => {
+              if (data.level.toLowerCase().includes(lvl.toLowerCase())) {
+                progress = data.progress;
+              }
+            });
+
+            function previousfn() {
+              previous = progress;
             }
-          });
 
-          function previousfn() {
-            previous = progress;
-          }
+            var isLocked =
+              Number(previous) >= 80 || previous === null || idx === 0
+                ? false
+                : true;
 
-          var isLocked =
-            Number(previous) >= 80 || previous === null ? false : true;
+            return (
+              <React.Fragment key={lvl}>
+                <TouchableOpacity onPress={() => handleClick(isLocked, lvl)}>
+                  <LearnCard
+                    level={lvl}
+                    idx={idx}
+                    progress={progress}
+                    isLocked={isLocked}
+                  />
+                </TouchableOpacity>
 
-          return (
-            <React.Fragment>
-              <TouchableOpacity
-                onPress={() => {
-                  //check for isLocked here itself hurray..!!
-                  console.log(lvl, "clicked");
-                }}
-              >
-                <LearnCard
-                  level={lvl}
-                  key={lvl}
-                  idx={idx}
-                  progress={progress}
-                  isLocked={isLocked}
-                />
-              </TouchableOpacity>
-
-              {previousfn()}
-            </React.Fragment>
-          );
-        })}
+                {previousfn()}
+              </React.Fragment>
+            );
+          })
+        ) : (
+          <View>
+            <ActivityIndicator size="large" color="green" />
+          </View>
+        )}
       </ScrollView>
     </View>
   );
@@ -110,5 +146,10 @@ const styles = StyleSheet.create({
     margin: 10,
     fontWeight: "bold",
     color: "#000",
+  },
+  root: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
