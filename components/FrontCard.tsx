@@ -1,31 +1,63 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+
+import { Audio } from "expo-av";
 
 interface Iprops {
   word: string;
   imgUrl: string;
   audioUrl: string;
-  //1 function prop
+  showMeaning: () => void;
 }
 
 const FrontCard: React.FC<Iprops> = (props) => {
+  const [sound, setSound] = React.useState<Audio.Sound>();
+  const [showDefault, setShowDefault] = React.useState(true);
+
+  let image = showDefault
+    ? require("../assets/new.webp")
+    : { uri: props.imgUrl };
+
+  async function playSound() {
+    console.log("Loading Sound");
+    const { sound } = await Audio.Sound.createAsync({ uri: props.audioUrl });
+    setSound(sound);
+
+    await sound.playAsync();
+  }
+
+  React.useEffect(() => {
+    return sound
+      ? () => {
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
   return (
     <View style={styles.card}>
-      <View style={{ marginLeft: "80%", marginTop: 10 }}>
-        <Feather name="bookmark" size={30} color="black" />
+      <TouchableOpacity onPress={playSound}>
+        <View style={{ marginLeft: "80%", marginTop: 15 }}>
+          <AntDesign name="sound" size={30} color="black" />
+        </View>
+      </TouchableOpacity>
+
+      <View style={styles.container}>
+        <Image
+          source={image}
+          style={styles.img}
+          onLoadEnd={() => setShowDefault(false)}
+        />
+        <Text style={styles.headerTitle}>{props.word}</Text>
       </View>
-      <Text style={styles.headerTitle}>{props.word}</Text>
-      <View style={{ marginVertical: 15 }}>
-        <AntDesign name="sound" size={24} color="black" />
-      </View>
+
       <TouchableOpacity
         style={styles.buttonContainer}
-        onPress={() => console.log("btn pressed")}
+        onPress={props.showMeaning}
       >
         <Text style={{ color: "white", marginTop: 9, fontSize: 19 }}>
-          Tap to see the meaning
+          Show meaning
         </Text>
       </TouchableOpacity>
     </View>
@@ -37,30 +69,42 @@ export default FrontCard;
 const styles = StyleSheet.create({
   card: {
     width: "100%",
-    alignItems: "center",
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
-    shadowOpacity: 0.26,
-    elevation: 8,
-    backgroundColor: "white",
+    height: "100%",
+    borderColor: "#000",
+    // borderWidth: 1,
     borderRadius: 20,
-    borderColor: "black",
-    borderWidth: 1,
-    marginBottom: 20,
+    alignItems: "center",
+    elevation: 3,
   },
+  container: {
+    marginTop: -10,
+    height: "60%",
+    width: "70%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  img: {
+    height: 130,
+    width: 130,
+  },
+
   headerTitle: {
-    fontSize: 25,
-    color: "red",
     fontStyle: "italic",
+    fontSize: 30,
+    fontWeight: "bold",
   },
   buttonContainer: {
-    width: "100%",
+    width: "99%",
     height: 45,
+    position: "absolute",
+    bottom: 0,
+    backgroundColor: "#F59530",
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
     alignItems: "center",
-    marginTop: 10,
-    borderBottomEndRadius: 20,
-    borderBottomStartRadius: 20,
-    backgroundColor: "green",
+    // borderTopColor: "#000",
+    // borderTopWidth: 1,
+    elevation: 8,
   },
 });

@@ -40,7 +40,7 @@ type UserPayload = {
 export type UserActions = ActionMap<UserPayload>[keyof ActionMap<UserPayload>];
 
 export default function (state: initialStateType, action: UserActions) {
-  console.log("reducer called============");
+  console.log("auth reducer called============");
 
   switch (action.type) {
     case t.SET_CURRENT_USER:

@@ -1,5 +1,4 @@
 import { Alert } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
 import jwt_deocde from "jwt-decode";
 
@@ -7,6 +6,7 @@ import { API } from "../../backend";
 
 import * as t from "../../types/actionTypes";
 import { userLoginType, decodeType } from "../../types/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const loginUser = (
   user: userLoginType,
@@ -38,6 +38,24 @@ export const loginUser = (
           type: t.SET_CURRENT_USER,
           payload: pt,
         });
+
+        fetch(`${API}user/${pt.userId}`)
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              const pt = {
+                knownLang: data.data.knownLang,
+                learningLang: data.data.learningLang,
+                currentLang: data.data.learningLang[0],
+              };
+
+              dispatch({
+                type: t.SET_LANG_DATA,
+                payload: pt,
+              });
+            }
+          })
+          .catch((err) => console.log(err));
       }
       // else {
       //   logoutUser(dispatch);
@@ -56,7 +74,10 @@ export const logoutUser = (dispatch: React.Dispatch<any>) => {
   AsyncStorage.removeItem("jwt");
   dispatch({
     type: t.SET_CURRENT_USER,
-    payload: null,
+    payload: {
+      userId: "",
+      token: "",
+    },
   });
 };
 

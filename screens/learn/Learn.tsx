@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { useFocusEffect } from "@react-navigation/native";
 
 import { API } from "../../backend";
 import LearnCard from "../../components/LearnCard";
@@ -26,21 +27,9 @@ const Learn = ({ navigation }: LearnNavProps<"Learn">) => {
 
   const [levels, setLevels] = useState<string[]>([]);
   const [progressData, setProgressData] = useState<progres[]>([]);
-  const [isFetched, setisFetched] = useState(false);
 
-  const preload = async () => {
-    await fetch(`${API}lang/level/${context.state.currentLang}`, {
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setLevels(data.data);
-        }
-      })
-      .catch((err) => console.log(err));
-
-    await fetch(
+  const fetchProgress = () => {
+    fetch(
       `${API}algo/learnData/${context.state.userId}/${context.state.currentLang}`,
       {
         method: "GET",
@@ -53,14 +42,33 @@ const Learn = ({ navigation }: LearnNavProps<"Learn">) => {
         }
       })
       .catch((err) => console.log(err));
-
-    setisFetched(true);
   };
 
-  useEffect(() => {
-    console.log("OP");
-    preload();
-  }, [isFetched]);
+  const preload = () => {
+    fetch(`${API}lang/level/${context.state.currentLang}`, {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setLevels(data.data);
+        }
+      })
+      .catch((err) => console.log(err));
+
+    fetchProgress();
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      preload();
+
+      // return () => {
+      //   setLevels([]);
+      //   setProgressData([]);
+      // }
+    }, [])
+  );
 
   var previous: number | null = null;
 
@@ -82,7 +90,7 @@ const Learn = ({ navigation }: LearnNavProps<"Learn">) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View>
       <ScrollView>
         <Text style={styles.heading}>Select a Level</Text>
 
@@ -122,7 +130,7 @@ const Learn = ({ navigation }: LearnNavProps<"Learn">) => {
           })
         ) : (
           <View>
-            <ActivityIndicator size="large" color="green" />
+            <ActivityIndicator size="large" color="red" />
           </View>
         )}
       </ScrollView>
@@ -137,9 +145,8 @@ export default Learn;
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#fff",
-  },
+  // container: {
+  // },
   heading: {
     textAlign: "center",
     fontSize: 25,

@@ -6,9 +6,9 @@ import { FontAwesome } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import LearnNavigation from "./LearnNav";
-import Quiz from "../screens/quiz/Quiz";
 import Ranking from "../screens/ranking/Ranking";
 import Profile from "../screens/user/Profile";
+import QuizNavigation from "./QuizNav";
 
 const Tab = createBottomTabNavigator();
 
@@ -46,7 +46,7 @@ const HomeNavigation = () => {
 
       <Tab.Screen
         name="quiz"
-        component={Quiz}
+        component={QuizNavigation}
         options={{
           tabBarIcon: ({ color }) => {
             return (

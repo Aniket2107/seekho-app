@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   getFocusedRouteNameFromRoute,
   useFocusEffect,
@@ -11,10 +11,13 @@ import { useFonts } from "expo-font";
 
 import { Learn, FlashCard } from "../screens/learn";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import AuthGlobal from "../context/store/AuthGlobal";
 
 const Stack = createStackNavigator();
 
 const MyStack = () => {
+  const context = useContext(AuthGlobal);
+
   let [fontsLoaded] = useFonts({
     PatrickHand_400Regular: require("../assets/PatrickHand-Regular.ttf"),
   });
@@ -30,9 +33,9 @@ const MyStack = () => {
         component={Learn}
         options={{
           headerTitle: () => null,
-          headerStyle: {
-            backgroundColor: "#e7305b",
-          },
+          // headerStyle: {
+          //   backgroundColor: "#e7305b",
+          // },
           headerRightContainerStyle: {
             marginRight: 15,
           },
@@ -45,7 +48,13 @@ const MyStack = () => {
               <Text style={styles.rightText}>10</Text>
             </View>
           ),
-          headerLeft: () => <Text style={styles.leftText}>Welcome! </Text>,
+          headerLeft: () => (
+            <Text style={styles.leftText}>
+              {context.state.currentLang
+                ? context.state.currentLang
+                : "Welcome !"}
+            </Text>
+          ),
         }}
       />
       <Stack.Screen
@@ -90,12 +99,12 @@ const styles = StyleSheet.create({
   rightText: {
     fontSize: 30,
     marginLeft: 2,
-    color: "#fff",
+    color: "#000",
     fontFamily: "PatrickHand_400Regular",
   },
   leftText: {
     fontSize: 30,
-    color: "#fff",
+    color: "#000",
     // fontWeight: "bold",
     fontFamily: "PatrickHand_400Regular",
   },
