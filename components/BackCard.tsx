@@ -41,11 +41,11 @@ const BackCard: React.FC<IProps> = (props) => {
 
   return (
     <View style={styles.card}>
-      <TouchableOpacity onPress={playSound}>
-        <View style={{ marginLeft: "80%", marginTop: 15 }}>
+      <View style={{ marginLeft: "80%", marginTop: 15 }}>
+        <TouchableOpacity onPress={playSound}>
           <AntDesign name="sound" size={30} color="black" />
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.knownWord}>
         <Text style={styles.knownText}>Word: {props.knownWord}</Text>

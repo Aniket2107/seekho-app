@@ -2,6 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet, Image, Animated } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
 
+import { levelImages } from "../assets/common/Colors";
+
 import { useFonts } from "expo-font";
 
 import AppLoading from "expo-app-loading";
@@ -50,7 +52,10 @@ const LearnCard: React.FC<IProps> = (props) => {
             </Text>
           </View>
           <View style={styles.rightContainer}>
-            <Image source={require("../assets/fruit.png")} style={styles.img} />
+            <Image
+              source={{ uri: levelImages[props.idx] }}
+              style={styles.img}
+            />
           </View>
         </View>
         <Text style={styles.completed}>{props.progress}% Completed</Text>

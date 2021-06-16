@@ -3,8 +3,8 @@ import { View, Text, StyleSheet } from "react-native";
 import { useInterval } from "../utils/useInterval";
 
 interface IProps {
-  timeoutFn: () => any;
-  calTimeFn: () => any;
+  timeoutFn: () => void;
+  calTimeFn: () => void;
   duration: number;
   isReRendered: boolean;
 }

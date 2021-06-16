@@ -90,6 +90,8 @@ const LoginScreen = ({ navigation }: AuthNavProps<"Register">) => {
       return;
     }
 
+    // Alert.alert("Loading......");
+
     loginUser({ email, password }, context.dispatch);
 
     // const foundUser = Users.filter( item => {

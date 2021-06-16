@@ -47,6 +47,9 @@ const FlashCard = ({ navigation, route }: FlashCardNavProps<"FlashCard">) => {
     learningPer: 0,
     reviewingPer: 0,
     masteredPer: 0,
+    wordsInMastered: [""],
+    wordsInReviewing: [""],
+    wordsInLearning: [""],
   });
   const [flipcard, setFlipcard] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -72,6 +75,9 @@ const FlashCard = ({ navigation, route }: FlashCardNavProps<"FlashCard">) => {
             reviewing: data.data.reviewingWords,
             mastered: data.data.masteredWords,
             totalWords: data.data.total,
+            wordsInLearning: data.data.learning,
+            wordsInReviewing: data.data.reviewing,
+            wordsInMastered: data.data.mastered,
           });
         }
       })
@@ -196,6 +202,7 @@ const FlashCard = ({ navigation, route }: FlashCardNavProps<"FlashCard">) => {
 
   const currentWord = vocab[wordIdx];
   let word: string;
+  let wordStatus: string;
   let wordInKnown: string;
   if (context.state.knownLang === "English" || "english") {
     word = currentWord.englishInEnglish;
@@ -203,6 +210,20 @@ const FlashCard = ({ navigation, route }: FlashCardNavProps<"FlashCard">) => {
   } else {
     word = currentWord.hindiInHindi;
     wordInKnown = currentWord.languageInHindi;
+  }
+
+  if (
+    progress.wordsInMastered &&
+    progress.wordsInMastered.indexOf(currentWord._id) !== -1
+  ) {
+    wordStatus = "Mastered";
+  } else if (
+    progress.wordsInReviewing &&
+    progress.wordsInReviewing.indexOf(currentWord._id) !== -1
+  ) {
+    wordStatus = "Reviewing";
+  } else {
+    wordStatus = "Learning";
   }
 
   return (
@@ -225,6 +246,8 @@ const FlashCard = ({ navigation, route }: FlashCardNavProps<"FlashCard">) => {
               <View style={styles.card}>
                 <FrontCard
                   word={word}
+                  wordId={currentWord._id}
+                  wordStatus={wordStatus}
                   audioUrl={currentWord.audio}
                   imgUrl={currentWord.image}
                   showMeaning={showMeaning}

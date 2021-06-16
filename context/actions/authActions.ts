@@ -56,10 +56,9 @@ export const loginUser = (
             }
           })
           .catch((err) => console.log(err));
+      } else {
+        Alert.alert("Oops", data.msg);
       }
-      // else {
-      //   logoutUser(dispatch);
-      // }
     })
     .catch((err) => {
       console.log(err);

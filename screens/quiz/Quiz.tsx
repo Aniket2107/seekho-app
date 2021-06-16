@@ -18,6 +18,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/core";
 import { QuizNavProps } from "../../types/ParamList";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import Result from "../../components/Result";
 
 type question = {
   _id: string;
@@ -131,10 +132,13 @@ const Quiz = ({ navigation, route }: QuizNavProps<"Quiz">) => {
               totalQuestions={questions.length}
             />
           ) : (
-            <View style={styles.onLoad}>
-              {console.log(userAns)}
-              <Text>Hello result {score}</Text>
-            </View>
+            <Result
+              userAns={userAns}
+              time={time}
+              question={questions}
+              score={score}
+              level={route.params.level}
+            />
           )}
         </View>
       </ScrollView>

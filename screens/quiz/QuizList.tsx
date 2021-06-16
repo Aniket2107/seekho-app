@@ -10,6 +10,8 @@ import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import QuizCard from "../../components/QuizCard";
 import { QuizListNavProps } from "../../types/ParamList";
 
+import { collectionColors } from "../../assets/common/Colors";
+
 type progres = {
   level: string;
   progress: number;
@@ -86,7 +88,7 @@ const QuizList = ({ navigation, route }: QuizListNavProps<"QuizList">) => {
         <Text style={styles.text}>Choose a Level</Text>
 
         {levels && levels.length > 0 ? (
-          levels.map((lvl) => {
+          levels.map((lvl, idx) => {
             let progress = 0;
             progressData.map((data) => {
               if (data.level.toLowerCase().includes(lvl.toLowerCase())) {
@@ -96,10 +98,16 @@ const QuizList = ({ navigation, route }: QuizListNavProps<"QuizList">) => {
 
             const isLocked = progress >= 80 ? false : true;
 
+            const colorIdx = (idx % 8) + 4;
+
             return (
               <React.Fragment key={lvl}>
                 <TouchableOpacity onPress={() => handleClick(isLocked, lvl)}>
-                  <QuizCard level={lvl} isLocked={isLocked} />
+                  <QuizCard
+                    level={lvl}
+                    isLocked={isLocked}
+                    color={collectionColors[colorIdx]}
+                  />
                 </TouchableOpacity>
               </React.Fragment>
             );

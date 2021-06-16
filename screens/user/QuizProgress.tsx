@@ -2,12 +2,12 @@ import React from "react";
 
 import { View, Text } from "react-native";
 
-const Ranking: React.FC = () => {
+function QuizProgress() {
   return (
     <View>
-      <Text>Ranking page</Text>
+      <Text>Quiz Progress</Text>
     </View>
   );
-};
+}
 
-export default Ranking;
+export default QuizProgress;

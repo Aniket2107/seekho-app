@@ -6,9 +6,9 @@ import { FontAwesome } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import LearnNavigation from "./LearnNav";
-import Ranking from "../screens/ranking/Ranking";
-import Profile from "../screens/user/Profile";
+import CollectionNavigation from "./CollectionNav";
 import QuizNavigation from "./QuizNav";
+import ProfileNavigation from "./ProfileNav";
 
 const Tab = createBottomTabNavigator();
 
@@ -64,13 +64,13 @@ const HomeNavigation = () => {
       />
 
       <Tab.Screen
-        name="ranking"
-        component={Ranking}
+        name="Collection"
+        component={CollectionNavigation}
         options={{
           tabBarIcon: ({ color }) => {
             return (
               <MaterialIcons
-                name="leaderboard"
+                name="collections-bookmark"
                 size={31}
                 style={{
                   position: "relative",
@@ -83,8 +83,8 @@ const HomeNavigation = () => {
       />
 
       <Tab.Screen
-        name="profile"
-        component={Profile}
+        name="Profile"
+        component={ProfileNavigation}
         options={{
           tabBarIcon: ({ color }) => {
             return (

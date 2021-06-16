@@ -1,17 +1,32 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Alert,
+} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
+
+import { API } from "../backend";
 
 import { Audio } from "expo-av";
+import AuthGlobal from "../context/store/AuthGlobal";
 
 interface Iprops {
   word: string;
+  wordId: string;
+  wordStatus: string;
   imgUrl: string;
   audioUrl: string;
   showMeaning: () => void;
 }
 
 const FrontCard: React.FC<Iprops> = (props) => {
+  const context = React.useContext(AuthGlobal);
+
   const [sound, setSound] = React.useState<Audio.Sound>();
   const [showDefault, setShowDefault] = React.useState(true);
 
@@ -35,13 +50,53 @@ const FrontCard: React.FC<Iprops> = (props) => {
       : undefined;
   }, [sound]);
 
+  const addToCollection = () => {
+    Alert.alert("Loading....");
+
+    fetch(`${API}collection/add`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: context.state.userId,
+        vocabId: props.wordId,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.success) {
+          Alert.alert("Congrats!", "Vocab added to you collection..", [
+            { text: "Ok", onPress: () => console.log("Word added") },
+          ]);
+        } else {
+          Alert.alert("Oops!", "Vocab already exists on your collection..", [
+            { text: "Ok", onPress: () => console.log("Word added") },
+          ]);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <View style={styles.card}>
-      <TouchableOpacity onPress={playSound}>
-        <View style={{ marginLeft: "80%", marginTop: 15 }}>
+      <View style={{ marginLeft: "80%", marginTop: 15 }}>
+        <TouchableOpacity onPress={playSound}>
           <AntDesign name="sound" size={30} color="black" />
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.addColl}>
+        <TouchableOpacity onPress={addToCollection}>
+          <MaterialIcons name="add-comment" size={30} color="black" />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.wordStatus}>
+        <Text style={styles.wordStatusText}>{props.wordStatus}</Text>
+      </View>
 
       <View style={styles.container}>
         <Image
@@ -83,6 +138,26 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+  },
+  addColl: {
+    position: "absolute",
+    top: 60,
+    right: 20,
+  },
+  wordStatus: {
+    position: "absolute",
+    left: 15,
+    top: 15,
+    backgroundColor: "green",
+    borderRadius: 15,
+  },
+  wordStatusText: {
+    paddingVertical: 5,
+    paddingHorizontal: 7,
+    fontSize: 16,
+    color: "#fff",
+    fontWeight: "bold",
+    fontStyle: "italic",
   },
   img: {
     height: 130,

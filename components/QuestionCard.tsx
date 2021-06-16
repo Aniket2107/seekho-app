@@ -12,8 +12,8 @@ interface IProps {
   options: Array<option>;
   duration: number;
   totalQuestions: number;
-  checkAnsFn: (option: option) => any;
-  calTimeFn: () => any;
+  checkAnsFn: (option: option) => void;
+  calTimeFn: () => void;
 }
 
 type option = {
