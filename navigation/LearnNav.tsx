@@ -112,3 +112,4 @@ const styles = StyleSheet.create({
 
 // ||
 // route.state.routeNames[route.state.index] === "FlashCard"
+//asdbjasd
