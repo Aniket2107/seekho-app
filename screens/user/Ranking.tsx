@@ -42,7 +42,7 @@ const Ranking = ({ route }: RankingNavProps<"Ranking">) => {
         <Text>{idx + 1}</Text>
         <View style={styles.textContainer}>
           <Text>{item.name}</Text>
-          <Text>{item.email}</Text>
+          {/* <Text>{item.email}</Text> */}
         </View>
         <Text>{item.points}</Text>
       </View>

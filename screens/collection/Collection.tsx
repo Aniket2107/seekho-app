@@ -54,10 +54,14 @@ const Ranking = ({ navigation, route }: CollectionNavProps<"Collection">) => {
       .then((data) => {
         if (data.success) {
           setVocabs(data.data.vocabCollection);
-          setloading(false);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setloading(false);
+      });
+
+    setloading(false);
   };
 
   useFocusEffect(
@@ -149,7 +153,7 @@ const Ranking = ({ navigation, route }: CollectionNavProps<"Collection">) => {
     );
   };
 
-  if (loading || vocabs.length === 0) {
+  if (loading) {
     return (
       <View style={styles.loading}>
         <ActivityIndicator size="large" color="red" />
@@ -177,6 +181,14 @@ const Ranking = ({ navigation, route }: CollectionNavProps<"Collection">) => {
         keyExtractor={(item) => item._id}
         numColumns={2}
       />
+
+      {vocabs.length === 0 && (
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
+          <Text>Please add some vocab ;)</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 };

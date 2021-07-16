@@ -3,8 +3,11 @@ import { StackNavigationProp } from "@react-navigation/stack";
 
 export type AuthParamList = {
   Login: undefined;
-  Register: undefined;
+  Register: {why:string,how:string,lang:string,goal:number};
   Home: undefined;
+  How:{why: string};
+  Why:undefined;
+  Goal:{why:string,how:string};
 };
 
 export type AuthNavProps<T extends keyof AuthParamList> = {

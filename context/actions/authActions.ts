@@ -5,7 +5,7 @@ import jwt_deocde from "jwt-decode";
 import { API } from "../../backend";
 
 import * as t from "../../types/actionTypes";
-import { userLoginType, decodeType } from "../../types/auth";
+import { userLoginType, decodeType , registerType} from "../../types/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const loginUser = (
@@ -79,6 +79,22 @@ export const logoutUser = (dispatch: React.Dispatch<any>) => {
     },
   });
 };
+
+export const registerUser = (dispatch: React.Dispatch<any>, userData:registerType) => {
+  fetch(`${API}auth/register`, {
+    method:"POST",
+    headers:{
+      Accept:'application/json',
+      'Content-Type':'application/json'
+    },
+    body: JSON.stringify(userData)
+  }).then(res => res.json()).then(data => {
+    if(data.success){
+      console.log('User registered...');
+      //Do some async storage things as well...
+    }
+  }).catch(err => console.log(err));
+}
 
 // export const setCurrentUser =
 //   (data: { token: string; userId: string } | null) =>

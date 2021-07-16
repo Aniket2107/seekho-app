@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "seekho-app",
-    "slug": "seekho-app",
+    "name": "seekho",
+    "slug": "seekho",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -26,7 +26,7 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/1.png"
     }
   }
 }

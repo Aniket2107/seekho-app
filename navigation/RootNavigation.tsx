@@ -4,6 +4,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import LoginScreen from "../screens/auth/Login";
 import RegisterScreen from "../screens/auth/Register";
 import Welcome from "../screens/auth/welcome";
+import How from "../screens/auth/How";
+import Goal from "../screens/auth/Goal";
+import Why from "../screens/auth/Why";
 
 const Stack = createStackNavigator();
 
@@ -13,6 +16,27 @@ const MyStack = () => {
       <Stack.Screen
         name="Home"
         component={Welcome}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="How"
+        component={How}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Why"
+        component={Why}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Goal"
+        component={Goal}
         options={{
           headerShown: false,
         }}

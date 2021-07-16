@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -15,7 +15,12 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
 import { AuthNavProps } from "../../types/ParamList";
 
-const RegisterScreen = ({ navigation }: AuthNavProps<"Login">) => {
+import AuthGlobal from "../../context/store/AuthGlobal";
+import { registerUser } from "../../context/actions/authActions";
+
+const RegisterScreen = ({ navigation, route }: AuthNavProps<"Register">) => {
+  const context = useContext(AuthGlobal);
+
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -25,6 +30,13 @@ const RegisterScreen = ({ navigation }: AuthNavProps<"Login">) => {
     secureTextEntry: true,
     confirm_secureTextEntry: true,
   });
+
+  useEffect(() => {
+    if (!route.params.lang || !route.params.how || !route.params.why) {
+      Alert.alert("Oops..", "Please select data properly before registering..");
+      navigation.navigate("Home");
+    }
+  }, []);
 
   const textInputChange = (val: string) => {
     if (val.length !== 0) {
@@ -70,7 +82,7 @@ const RegisterScreen = ({ navigation }: AuthNavProps<"Login">) => {
     });
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (
       !data.email ||
       !data.password ||
@@ -80,33 +92,36 @@ const RegisterScreen = ({ navigation }: AuthNavProps<"Login">) => {
       Alert.alert("Enter valid data");
     }
 
+    // console.log("data", data);
+
     const payload = {
       email: data.email,
       name: data.name,
       password: data.password,
+      whyLearning: route.params.why,
+      knownThrough: route.params.how,
+      dailyGoal: route.params.goal,
+      knownLang: "English",
+      learningLang: [route.params.lang],
+      points: [
+        {
+          language: route.params.lang,
+          coins: 0,
+        },
+      ],
     };
 
-    fetch(``, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+    await registerUser(context.dispatch, payload);
+
+    Alert.alert("SignUp sucessfull", "Please login here...", [
+      {
+        text: "Login",
+        onPress: () => navigation.navigate("Login"),
       },
-      body: JSON.stringify(payload),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          console.log(data);
-          //Toast to show then to login now:--
-          // or else directly connect lets try wait ;(
-        }
-      })
-      .catch((err) => {
-        //Try toast or else alert
-        console.log(err);
-      });
+    ]);
   };
+
+  // console.log("reg data ===", route.params);
 
   return (
     <View style={styles.container}>

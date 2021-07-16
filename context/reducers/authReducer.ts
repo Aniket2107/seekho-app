@@ -9,6 +9,7 @@ export const initialState = {
   learningLang: [],
   currentLang: "",
   token: "",
+  points: [{ language: "", coins: 0 }],
 };
 
 type ActionMap<M extends { [index: string]: any }> = {
@@ -31,6 +32,10 @@ type UserPayload = {
     knownLang: string;
     learningLang: string[];
     currentLang: string;
+    points: Array<{
+      language: string;
+      coins: number;
+    }>;
   };
   [t.SET_CURRENT_LANG]: {
     currentLang: string;
@@ -57,6 +62,7 @@ export default function (state: initialStateType, action: UserActions) {
         knownLang: action.payload.knownLang,
         learningLang: action.payload.learningLang,
         currentLang: action.payload.currentLang,
+        points: action.payload.points,
       };
     case t.SET_CURRENT_LANG:
       return {

@@ -1,26 +1,29 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import StyledButton from "../../components/Home/styledbutton";
-import { View, Text, Dimensions } from "react-native";
+import { View, Text, Dimensions, SafeAreaView } from "react-native";
 import Elephant from "../../components/elephant";
 import { HomeNavProps } from "../../types/ParamList";
 
 const Welcome = ({ navigation }: HomeNavProps<"Home">) => {
   return (
-    <View style={styles.container}>
-      <Elephant />
+    <SafeAreaView style={styles.container}>
+      <View style={styles.ele}>
+        <Elephant />
+      </View>
       <View style={styles.titles}>
         <Text style={styles.title}>SeeKho</Text>
         <Text style={styles.subtitle}>
           A Way To Connect To Different Cultures
         </Text>
       </View>
+
       <View style={styles.buttonsContainer}>
         <StyledButton
           type="primary"
           content={"Get Started"}
           onPress={() => {
-            navigation.navigate("Login");
+            navigation.navigate("Why");
           }}
         />
         <StyledButton
@@ -31,7 +34,7 @@ const Welcome = ({ navigation }: HomeNavProps<"Home">) => {
           }}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 export default Welcome;
@@ -39,14 +42,18 @@ export default Welcome;
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    height: Dimensions.get("screen").height,
+    height: "100%",
   },
   ele: {
-    height: 150,
-    width: 150,
+    marginTop: -100,
+  },
+  body: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "stretch",
   },
   titles: {
-    marginTop: "100%",
+    marginTop: "110%",
     width: "100%",
     alignItems: "center",
   },
@@ -61,7 +68,7 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     position: "absolute",
-    bottom: 50,
+    bottom: Dimensions.get("window").height * 0.1,
     width: "100%",
   },
 });

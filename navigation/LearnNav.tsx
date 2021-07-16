@@ -45,7 +45,9 @@ const MyStack = () => {
           headerRight: () => (
             <View style={styles.rightView}>
               <Icon name="crown" color={"orange"} size={20} />
-              <Text style={styles.rightText}>10</Text>
+              <Text style={styles.rightText}>
+                {context.state.points ? context.state.points[0].coins : 0}
+              </Text>
             </View>
           ),
           headerLeft: () => (

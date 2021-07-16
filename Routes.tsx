@@ -38,8 +38,9 @@ const Routes: React.FC = () => {
               knownLang: data.data.knownLang,
               learningLang: data.data.learningLang,
               currentLang: data.data.learningLang[0],
+              points: data.data.points,
             };
-
+            // console.log(pt);
             context.dispatch({
               type: t.SET_LANG_DATA,
               payload: pt,

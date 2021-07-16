@@ -320,6 +320,7 @@ const styles = StyleSheet.create({
     alignItems: "stretch",
   },
   card: {
+    backgroundColor:'white',
     width: width * 0.91,
     height: height * 0.44,
     margin: width * 0.04,

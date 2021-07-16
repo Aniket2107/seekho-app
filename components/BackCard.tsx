@@ -102,8 +102,9 @@ const styles = StyleSheet.create({
   card: {
     width: "100%",
     height: "100%",
-    // borderColor: "#000",
-    // borderWidth: 1,
+    backgroundColor:'#fff',
+    borderColor: "#000",
+    borderWidth: 1,
     borderRadius: 20,
     alignItems: "center",
     elevation: 3,

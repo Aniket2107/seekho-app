@@ -125,11 +125,12 @@ const styles = StyleSheet.create({
   card: {
     width: "100%",
     height: "100%",
+    backgroundColor:'#fff',
     borderColor: "#000",
-    // borderWidth: 1,
+    borderWidth: 1,
     borderRadius: 20,
     alignItems: "center",
-    elevation: 3,
+    elevation: 1,
   },
   container: {
     marginTop: -10,
@@ -170,7 +171,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   buttonContainer: {
-    width: "99%",
+    width: "100%",
     height: 45,
     position: "absolute",
     bottom: 0,

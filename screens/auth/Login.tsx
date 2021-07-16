@@ -232,7 +232,14 @@ const LoginScreen = ({ navigation }: AuthNavProps<"Register">) => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate("Register")}
+            onPress={() =>
+              navigation.navigate("Register", {
+                why: "",
+                how: "",
+                goal: 0,
+                lang: "",
+              })
+            }
             style={[
               styles.signIn,
               {

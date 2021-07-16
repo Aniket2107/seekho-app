@@ -3,6 +3,17 @@ export type userLoginType = {
   password: string;
 };
 
+export type registerType = {
+  name: string;
+  email: string;
+  password: string;
+  whyLearning: string;
+  knownThrough: string;
+  dailyGoal: number;
+  knownLang: string;
+  learningLang: string[];
+};
+
 export type initialStateType = {
   isAuthenticated: boolean;
   token: string;
@@ -10,6 +21,10 @@ export type initialStateType = {
   knownLang: string;
   learningLang: string[];
   currentLang: string;
+  points: Array<{
+    language: string;
+    coins: number;
+  }>;
 };
 
 export type decodeType = {
